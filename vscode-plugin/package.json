@@ -15,12 +15,14 @@
 	"main": "./out/extension.js",
 	"contributes": {
 		"configuration": {
-			"title": "programmaticTemplatePath",
-			"type": [
-				"string"
-			],
-			"default": null,
-			"description": "The absolute path to the programmatic template script. Only one script is supported at a time. If you want to use multiple, you can call them from your script and combine them in whatever way you want. TODO: add such an example"
+			"title": "progTemplates",
+			"properties": {
+				"progTemplates.ProgrammaticTemplatePath": {
+					"type": "string",
+					"default": null,
+					"description": "The absolute path to the programmatic template script. Only one script is supported at a time. If you want to use multiple, you can call them from your script and combine them in whatever way you want. TODO: add such an example"
+				}
+			}
 		},
 		"commands": [
 			{
