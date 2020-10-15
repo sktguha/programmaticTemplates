@@ -1,4 +1,0 @@
-search for = this.target or =this.target or = target or =target upwards
- * if we reach blank line means we reached top
- *   so o/p const { val } = this.target 1 after the blank line index
- * else
