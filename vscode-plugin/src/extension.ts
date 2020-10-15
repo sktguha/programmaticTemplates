@@ -6,13 +6,10 @@ import * as vscode from 'vscode';
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "propsstateadd" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
+	console.log('Congratulations, your extension "programmaticTemplates" is now active!');
+	// supply this to scripts as we are always importing freshly everytime so its easier for testing. so they can use this for any long term usages.
+	// although most scripts shouldn't need it
+	const store = {};
 	context.subscriptions.push(
 		vscode.commands.registerCommand('extension.addToProps', async () => {
 			try {
@@ -31,13 +28,17 @@ export function activate(context: vscode.ExtensionContext) {
 						vscode.window.showInformationMessage("Error: please set 'programmaticTemplatePath' to absolute path of the script you want to invoke, in your settings.json. If you want to try out an example, you can download any file , for ex: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js and set it to the absolute path of the downloaded file ");
 						return;
 					}
-					const userScript = require(programmaticTemplatePath);
+					const importFresh = require('import-fresh');
+					// import fresh so that its easier to test the changes without restarting
+					// for now scripts can maybe use the store object supplied for any long term usage or file system maybe
+					const userScript = importFresh(programmaticTemplatePath);
 					const promise = userScript({
 						// TODO: add more params to pass to userScript here
 						selectedText: word,
 						log: (str: any) => {
 							vscode.window.showInformationMessage("msg from your script: " + str);
-						}
+						},
+						store
 					});
 					// handle in case string is returned and not promise
 					const result = await promise;
