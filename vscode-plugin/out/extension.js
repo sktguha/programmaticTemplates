@@ -21,6 +21,7 @@ function activate(context) {
     // although most scripts shouldn't need it
     const store = {};
     context.subscriptions.push(vscode.commands.registerCommand('extension.addToProps', () => __awaiter(this, void 0, void 0, function* () {
+        var _a;
         try {
             console.log('props');
             const editor = vscode.window.activeTextEditor;
@@ -43,6 +44,7 @@ function activate(context) {
                 const promise = userScript({
                     // TODO: add more params to pass to userScript here
                     selectedText: word,
+                    absolutePath: (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.fileName,
                     log: (str) => {
                         vscode.window.showInformationMessage("msg from your script: " + str);
                     },

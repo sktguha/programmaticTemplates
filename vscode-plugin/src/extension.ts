@@ -35,6 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
 					const promise = userScript({
 						// TODO: add more params to pass to userScript here
 						selectedText: word,
+						absolutePath: vscode.window.activeTextEditor?.document.fileName,
 						log: (str: any) => {
 							vscode.window.showInformationMessage("msg from your script: " + str);
 						},
