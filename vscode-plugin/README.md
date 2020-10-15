@@ -1,1 +1,1 @@
-check the readme here: [Readme.md](../Readme.md)
+check the readme here: [Readme.md](../README.md)
