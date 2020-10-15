@@ -14,28 +14,55 @@ export function activate(context: vscode.ExtensionContext) {
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
 	context.subscriptions.push(
-        vscode.commands.registerCommand('extension.addToProps', () => {
-			const axios = require('axios');
+        vscode.commands.registerCommand('extension.addToProps', async () => {
+			try {
+			console.log('props');
 			const editor = vscode.window.activeTextEditor;
-			console.log(editor);
-			const lastSel = editor?.selections.sort((a, b) => a.start.line - b.start.line).pop();
-			console.log(lastSel);
-			let cursorPosition = lastSel?.end;
-			let wordRange = cursorPosition && editor?.document.getWordRangeAtPosition(cursorPosition);
-			let highlight = wordRange && editor?.document.getText(wordRange);
-			console.log(cursorPosition, wordRange, highlight);
-			axios.get('http://localhost:9090?command=props&path='+vscode.window.activeTextEditor?.document.fileName+"&line="+lastSel?.end.line+"&char="+lastSel?.end.character+"&high="+highlight);
+			if (editor) {
+				const document = editor.document;
+				const selection = editor.selection;
+
+				// Get the word within the selection
+				const word = document.getText(selection);
+				const workbenchConfig = vscode.workspace.getConfiguration('workbench');
+				let programmaticTemplatePath: string = workbenchConfig.get('programmaticTemplatePath')||"";
+				if(!programmaticTemplatePath){
+					vscode.window.showInformationMessage("Error: please set 'programmaticTemplatePath' to absolute path of the script you want to invoke, in your settings.json");
+					return;
+				}
+				const userScript = require(programmaticTemplatePath);
+				const promise = userScript({
+					// TODO: add more params to pass to userScript here
+					selectedText: word, 
+					log: (str:any) => { 
+						vscode.window.showInformationMessage("msg from your script: "+str);
+					}
+				});
+				// handle in case string is returned and not promise
+				const result = await promise;
+				if(!result){
+					vscode.window.showInformationMessage("your script didn't return any value. To debug why, you can call the log function supplied as a property on the first arguent. see a simple 4 line example here: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js");
+					return;
+				}
+				editor.edit(editBuilder => {
+					editBuilder.replace(selection, result);
+				});
+			}
+		} catch(err){
+			console.log("error occurred", err);
+			vscode.window.showInformationMessage("error occurred:" + JSON.stringify(err));
+		}
 		})
 	);	
 	context.subscriptions.push(
 		vscode.commands.registerCommand('extension.addToState', () => {
-			const axios = require('axios');
-			const editor = vscode.window.activeTextEditor;
-			const lastSel = editor?.selections.sort((a, b) => a.start.line - b.start.line).pop();
-			let cursorPosition = lastSel?.end;
-			let wordRange = cursorPosition && editor?.document.getWordRangeAtPosition(cursorPosition);
-			let highlight = wordRange && editor?.document.getText(wordRange);
-			axios.get('http://localhost:9090?command=state&path='+vscode.window.activeTextEditor?.document.fileName+"&line="+lastSel?.end.line+"&char="+lastSel?.end.character+"&high="+highlight);
+			// const axios = require('axios');
+			// const editor = vscode.window.activeTextEditor;
+			// const lastSel = editor?.selections.sort((a, b) => a.start.line - b.start.line).pop();
+			// let cursorPosition = lastSel?.end;
+			// let wordRange = cursorPosition && editor?.document.getWordRangeAtPosition(cursorPosition);
+			// let highlight = wordRange && editor?.document.getText(wordRange);
+			// axios.get('http://localhost:9090?command=state&path='+vscode.window.activeTextEditor?.document.fileName+"&line="+lastSel?.end.line+"&char="+lastSel?.end.character+"&high="+highlight);
         })
       );
 }
