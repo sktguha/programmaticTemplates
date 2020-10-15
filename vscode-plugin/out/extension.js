@@ -31,8 +31,8 @@ function activate(context) {
                 const selection = editor.selection;
                 // Get the word within the selection
                 const word = document.getText(selection);
-                const workbenchConfig = vscode.workspace.getConfiguration('workbench');
-                let programmaticTemplatePath = workbenchConfig.get('programmaticTemplatePath') || "";
+                const configuration = vscode.workspace.getConfiguration('progTemplates');
+                const programmaticTemplatePath = configuration['ProgrammaticTemplatePath'];
                 // TODO: run basicAsyncExample.js maybe if this argument is not supplied
                 if (!programmaticTemplatePath) {
                     vscode.window.showInformationMessage("Error: please set 'programmaticTemplatePath' to absolute path of the script you want to invoke, in your settings.json. If you want to try out an example, you can download any file , for ex: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js and set it to the absolute path of the downloaded file ");
