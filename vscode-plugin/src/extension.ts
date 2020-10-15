@@ -51,7 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			} catch (err) {
 				console.log("error occurred", err);
-				vscode.window.showInformationMessage("error occurred:" + JSON.stringify(err));
+				vscode.window.showInformationMessage("error occurred:" + err.toString() + " : JSON stringified error: " + JSON.stringify(err));
 			}
 		})
 	);
