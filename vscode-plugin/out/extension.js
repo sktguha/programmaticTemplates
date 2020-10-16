@@ -49,9 +49,8 @@ function activate(context) {
                     // TODO: add more params to pass to userScript here
                     selectedText: word,
                     absolutePath: (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.fileName,
-                    log: (str) => {
-                        vscode.window.showInformationMessage("msg from your script: " + str);
-                    },
+                    log: (str) => vscode.window.showInformationMessage("msg from your script: " + str),
+                    showError: (str) => vscode.window.showErrorMessage("msg from your script: " + str),
                     store,
                     selections: editor.selections
                 });

@@ -40,9 +40,8 @@ export function activate(context: vscode.ExtensionContext) {
 						// TODO: add more params to pass to userScript here
 						selectedText: word,
 						absolutePath: vscode.window.activeTextEditor?.document.fileName,
-						log: (str: any) => {
-							vscode.window.showInformationMessage("msg from your script: " + str);
-						},
+						log: (str: any) => vscode.window.showInformationMessage("msg from your script: " + str),
+						showError: (str: any) => vscode.window.showErrorMessage("msg from your script: " + str),
 						store,
 						selections: editor.selections
 					});
