@@ -53,8 +53,8 @@ function activate(context) {
                         return arg.toString();
                     }
                 };
-                const logFn = (...args) => vscode.window.showInformationMessage("msg from your script: " + args.map(toStr).join(","));
-                const errorFn = (...args) => vscode.window.showErrorMessage("msg from your script: " + args.map(toStr).join(","));
+                const logFn = (...args) => vscode.window.showInformationMessage("msg from your script: " + args.map(toStr).join(" , "));
+                const errorFn = (...args) => vscode.window.showErrorMessage("msg from your script: " + args.map(toStr).join(" , "));
                 const options = {
                     absolutePath: (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.fileName,
                     log: logFn,
@@ -69,6 +69,8 @@ function activate(context) {
                 const promise = userScript(word, options);
                 console.log = oldLog;
                 console.error = oldError;
+                console.log("all good");
+                console.error("all good");
                 // handle in case string is returned and not promise
                 const result = yield promise;
                 if (!result) {

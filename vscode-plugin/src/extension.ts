@@ -43,8 +43,8 @@ export function activate(context: vscode.ExtensionContext) {
 							return arg.toString();
 						}
 					}
-					const logFn = (...args: any[]) => vscode.window.showInformationMessage("msg from your script: " + args.map(toStr).join(","));
-					const errorFn = (...args: any[]) => vscode.window.showErrorMessage("msg from your script: " + args.map(toStr).join(","));
+					const logFn = (...args: any[]) => vscode.window.showInformationMessage("msg from your script: " + args.map(toStr).join(" , "));
+					const errorFn = (...args: any[]) => vscode.window.showErrorMessage("msg from your script: " + args.map(toStr).join(" , "));
 					const options = {
 						absolutePath: vscode.window.activeTextEditor?.document.fileName,
 						log: logFn,
@@ -59,6 +59,8 @@ export function activate(context: vscode.ExtensionContext) {
 					const promise = userScript(word, options);
 					console.log = oldLog;
 					console.error = oldError;
+					console.log("all good");
+					console.error("all good");
 					// handle in case string is returned and not promise
 					const result = await promise;
 					if (!result) {
