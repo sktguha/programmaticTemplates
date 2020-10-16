@@ -36,15 +36,14 @@ export function activate(context: vscode.ExtensionContext) {
 					// import fresh so that its easier to test the changes without restarting
 					// for now scripts can maybe use the store object supplied for any long term usage or file system maybe
 					const userScript = importFresh(programmaticTemplatePath);
-					const promise = userScript({
-						// TODO: add more params to pass to userScript here
-						selectedText: word,
+					const options = {
 						absolutePath: vscode.window.activeTextEditor?.document.fileName,
 						log: (str: any) => vscode.window.showInformationMessage("msg from your script: " + str),
 						showError: (str: any) => vscode.window.showErrorMessage("msg from your script: " + str),
 						store,
 						selections: editor.selections
-					});
+					};
+					const promise = userScript(word, options);
 					// handle in case string is returned and not promise
 					const result = await promise;
 					if (!result) {
