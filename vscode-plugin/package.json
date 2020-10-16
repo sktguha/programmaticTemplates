@@ -1,11 +1,12 @@
 {
-	"name": "programmatic_templates",
+	"name": "programmatic-templates",
 	"displayName": "progTemplates",
 	"description": "",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.46.0"
 	},
+	"publisher": "sktguha",
 	"categories": [
 		"Other"
 	],
