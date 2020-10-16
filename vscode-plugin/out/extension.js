@@ -52,7 +52,8 @@ function activate(context) {
                     log: (str) => {
                         vscode.window.showInformationMessage("msg from your script: " + str);
                     },
-                    store
+                    store,
+                    selections: editor.selections
                 });
                 // handle in case string is returned and not promise
                 const result = yield promise;
