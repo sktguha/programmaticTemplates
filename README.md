@@ -9,7 +9,7 @@ Only run scripts from sources/people you trust. As there is **NO SANDBOXING** me
 Please also see steps 2 and 3 below </br><br/>
 # running-custom-scripts
 2. specify absolute path to the replacer script in extension options ( basically in settings.json add new option, `"progTemplates.ProgrammaticTemplatePath": "/absolute/path/to/your/replacerScript.js"` , for a simple 4 line example download this script: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js?raw=true and set the option "progTemplates.ProgrammaticTemplatePath" described above to the absolute path, for example in mac it probably would be <br/>
-`"progTemplates.ProgrammaticTemplatePath": /Users/<your_user_name>/Downloads/basicAsyncExample.js`
+`"progTemplates.ProgrammaticTemplatePath": "/Users/<your_user_name>/Downloads/basicAsyncExample.js"`
 <br/>)<br/><br/>
 3. You are all set! select any text in your code and press the keyboard shortcut(ctrl+z by default, TODO: change it in windows or you can reassign it from settings) or open command palette(command+shift+p in mac) and type (without quotes) '>Execute the script and replace selected text' and select the command from the dropdown and selected text will be replaced by the output from your script (your script gets various options in the first argument) 
 <br/> See examples of replacer scripts here: https://github.com/sktguha/programmaticTemplatesExamples
