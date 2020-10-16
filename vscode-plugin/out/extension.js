@@ -34,7 +34,11 @@ function activate(context) {
                 const programmaticTemplatePath = configuration['ProgrammaticTemplatePath'];
                 // TODO: run basicAsyncExample.js maybe if this argument is not supplied
                 if (!programmaticTemplatePath) {
-                    vscode.window.showInformationMessage("Error: please set 'progTemplates.ProgrammaticTemplatePath' in your settings.json to absolute path of the script you want to invoke. If you want to try out an example, you can download any file , for ex: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js and set it to the absolute path of the downloaded file ");
+                    // vscode.window.showErrorMessage("Error: please set 'progTemplates.ProgrammaticTemplatePath' in your settings.json to absolute path of the script you want to invoke. see https://github.com/sktguha/programmaticTemplates#running-custom-scripts for more information");
+                    const exampleReplaced = `replaced selected text : '${word}' with custom value. To run your own custom replacer function instead(in node.js itself, NO custom language required), follow the steps here : https://github.com/sktguha/programmaticTemplates#running-custom-scripts`;
+                    editor.edit(editBuilder => {
+                        editBuilder.replace(selection, exampleReplaced);
+                    });
                     return;
                 }
                 const importFresh = require('import-fresh');
@@ -53,7 +57,7 @@ function activate(context) {
                 // handle in case string is returned and not promise
                 const result = yield promise;
                 if (!result) {
-                    vscode.window.showInformationMessage("your script didn't return any value. To debug why, you can call the log function supplied as a property on the first arguent. see a simple 4 line example here: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js");
+                    vscode.window.showErrorMessage("your script didn't return any value. To debug why, you can call the log function supplied as a property on the first arguent. see a simple 4 line example here: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js");
                     return;
                 }
                 editor.edit(editBuilder => {
@@ -63,7 +67,7 @@ function activate(context) {
         }
         catch (err) {
             console.log("error occurred", err);
-            vscode.window.showInformationMessage("error occurred:" + err.toString() + " \nerror stack: " + err.stack + " : \nJSON stringified error: " + JSON.stringify(err));
+            vscode.window.showErrorMessage("error occurred while running your script:" + err.toString() + " \nerror stack: " + err.stack + " : \nJSON stringified error: " + JSON.stringify(err));
         }
     })));
 }

@@ -28,7 +28,7 @@
 		"commands": [
 			{
 				"command": "progTemplates.execAndReplaceSelection",
-				"title": "Exectute the script and relace selected text with the output"
+				"title": "Execute the script and relace selected text with the output"
 			}
 		],
 		"keybindings": [
