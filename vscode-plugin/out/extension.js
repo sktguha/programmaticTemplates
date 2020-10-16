@@ -45,14 +45,30 @@ function activate(context) {
                 // import fresh so that its easier to test the changes without restarting
                 // for now scripts can maybe use the store object supplied for any long term usage or file system maybe
                 const userScript = importFresh(programmaticTemplatePath);
+                const toStr = (arg) => {
+                    try {
+                        return JSON.stringify(arg);
+                    }
+                    catch (err) {
+                        return arg.toString();
+                    }
+                };
+                const logFn = (...args) => vscode.window.showInformationMessage("msg from your script: " + args.map(toStr).join(","));
+                const errorFn = (...args) => vscode.window.showErrorMessage("msg from your script: " + args.map(toStr).join(","));
                 const options = {
                     absolutePath: (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.fileName,
-                    log: (str) => vscode.window.showInformationMessage("msg from your script: " + str),
-                    showError: (str) => vscode.window.showErrorMessage("msg from your script: " + str),
+                    log: logFn,
+                    showError: errorFn,
                     store,
                     selections: editor.selections
                 };
+                const oldLog = console.log;
+                console.log = logFn;
+                const oldError = console.error;
+                console.error = errorFn;
                 const promise = userScript(word, options);
+                console.log = oldLog;
+                console.error = oldError;
                 // handle in case string is returned and not promise
                 const result = yield promise;
                 if (!result) {
