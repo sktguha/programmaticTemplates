@@ -27,12 +27,15 @@
 		},
 		"commands": [
 			{
-				"command": "extension.addToState",
-				"title": "Add variable to state destructuring"
-			},
+				"command": "progTemplates.execAndReplaceSelection",
+				"title": "Exectute the script and relace selected text with the output"
+			}
+		],
+		"keybindings": [
 			{
-				"command": "extension.addToProps",
-				"title": "Add variable to props destructuring"
+				"command": "progTemplates.execAndReplaceSelection",
+				"key": "ctrl+z",
+				"mac": "ctrl+z"
 			}
 		]
 	},
