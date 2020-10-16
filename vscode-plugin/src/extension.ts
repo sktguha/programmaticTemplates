@@ -72,6 +72,7 @@ export function activate(context: vscode.ExtensionContext) {
 					});
 				}
 			} catch (err) {
+				console.error = console.log = console.info
 				console.log("error occurred", err);
 				vscode.window.showErrorMessage("error occurred while running your script:" + err.toString() + " \nerror stack: " + err.stack + " : \nJSON stringified error: " + JSON.stringify(err));
 			}
