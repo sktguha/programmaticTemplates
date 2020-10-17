@@ -39,6 +39,7 @@
 			}
 		]
 	},
+	"repository": "https://github.com/sktguha/programmaticTemplates",
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"package": "vsce package",
