@@ -77,7 +77,7 @@ function activate(context) {
                 // handle in case string is returned and not promise
                 const result = yield promise;
                 if (!result) {
-                    vscode.window.showErrorMessage("your script didn't return any value. To debug why, you can use normal console.log or console.error in your script (console.log and console.error are overwritten so that calls to them in your script will show up a dialog like this. NOTE: info and warn not supported yet). see a simple 4 line example here: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js");
+                    vscode.window.showErrorMessage("your script didn't return any value. To debug why, you can use normal console.log or console.error in your script (console.log and console.error are overwritten so that calls to them in your script will show up a dialog like this. NOTE: info and warn NOT supported yet). see a simple 4 line example here: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js");
                     return;
                 }
                 editor.edit(editBuilder => {
