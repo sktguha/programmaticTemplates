@@ -3,3 +3,4 @@
 vscode-plugin/.DS_Store
 .DS_Store
 vscode-plugin/node_modules
+node_modules/
