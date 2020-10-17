@@ -53,14 +53,17 @@ function activate(context) {
                         return arg.toString();
                     }
                 };
-                const logFn = (...args) => vscode.window.showInformationMessage("msg from your script: " + args.map(toStr).join(" , "));
-                const errorFn = (...args) => vscode.window.showErrorMessage("msg from your script: " + args.map(toStr).join(" , "));
+                let appendSrc = true;
+                const logFn = (...args) => vscode.window.showInformationMessage((appendSrc ? "msg from your script: " : "") + args.map(toStr).join(" , "));
+                const errorFn = (...args) => vscode.window.showErrorMessage((appendSrc ? "msg from your script: " : "") + args.map(toStr).join(" , "));
                 const options = {
                     absolutePath: (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document.fileName,
                     log: logFn,
                     showError: errorFn,
+                    showInputBox: (...args) => vscode.window.showInputBox(...args),
                     store,
-                    selections: editor.selections
+                    selections: editor.selections,
+                    setAppendSrcFlagValue: (val) => { appendSrc = val; }
                 };
                 const oldLog = console.log;
                 console.log = logFn;
@@ -74,7 +77,7 @@ function activate(context) {
                 // handle in case string is returned and not promise
                 const result = yield promise;
                 if (!result) {
-                    vscode.window.showErrorMessage("your script didn't return any value. To debug why, you can call the log function supplied as a property on the first arguent. see a simple 4 line example here: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js");
+                    vscode.window.showErrorMessage("your script didn't return any value. To debug why, you can use normal console.log or console.error in your script (console.log and console.error are overwritten so that calls to them in your script will show up a dialog like this. NOTE: info and warn not supported yet). see a simple 4 line example here: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js");
                     return;
                 }
                 editor.edit(editBuilder => {
