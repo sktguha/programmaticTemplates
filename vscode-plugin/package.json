@@ -13,7 +13,7 @@
 	"activationEvents": [
 		"*"
 	],
-	"main": "./src/extension.js",
+	"main": "./out/extension.js",
 	"contributes": {
 		"configuration": {
 			"title": "progTemplates",
@@ -29,22 +29,6 @@
 			{
 				"command": "progTemplates.execAndReplaceSelection",
 				"title": "Execute the script and relace selected text with the output"
-			},
-			{
-				"command": "progTemplates.execAndReplaceSelection2",
-				"title": "Execute the script and relace selected text with the output, passing 2 as value of commandNo in options object"
-			},
-			{
-				"command": "progTemplates.execAndReplaceSelection3",
-				"title": "Execute the script and relace selected text with the output, passing 3 as value of commandNo in options object"
-			},
-			{
-				"command": "progTemplates.execAndReplaceSelection4",
-				"title": "Execute the script and relace selected text with the output,passing 4 as value of commandNo in options object"
-			},
-			{
-				"command": "progTemplates.execAndReplaceSelection5",
-				"title": "Execute the script and relace selected text with the output, passing 5 as value of commandNo in options object"
 			}
 		],
 		"keybindings": [
@@ -62,7 +46,11 @@
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"package": "vsce package",
-		"lint": "eslint src --ext ts"
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
