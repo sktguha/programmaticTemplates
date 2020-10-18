@@ -5,8 +5,8 @@ console.log('came here');
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
-
-    console.log('Congratulations, your extension dasdsadaasd "programmaticTemplates" is now active!');
+    console.log(process.version);
+    console.log('Congratulations, your extension "programmaticTemplates" is now active!');
     // supply this to scripts as we are always importing freshly everytime so its easier for testing. so they can use this for any long term usages.
     // although most scripts shouldn't need it
     const store = {};
@@ -14,7 +14,6 @@ function activate(context) {
         vscode.commands.registerCommand('progTemplates.execAndReplaceSelection', async () => {
             try {
                 console.log('command invoked progTemplates.execAndReplaceSelection');
-                global.alert = () => { };
                 const editor = vscode.window.activeTextEditor;
                 if (editor) {
                     const document = editor.document;
@@ -47,6 +46,7 @@ function activate(context) {
                     let appendSrc = true;
                     const logFn = (...args) => vscode.window.showInformationMessage((appendSrc ? "msg from your script: " : "") + args.map(toStr).join(" , "));
                     const errorFn = (...args) => vscode.window.showErrorMessage((appendSrc ? "msg from your script: " : "") + args.map(toStr).join(" , "));
+                    global.alert = logFn;
                     const options = {
                         absolutePath: vscode.window.activeTextEditor.document.fileName,
                         log: logFn,
