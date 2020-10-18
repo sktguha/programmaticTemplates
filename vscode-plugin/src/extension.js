@@ -1,10 +1,10 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+const vscode = require('vscode');
 console.log('came here');
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context) {
+function activate(context) {
 
     console.log('Congratulations, your extension dasdsadaasd "programmaticTemplates" is now active!');
     // supply this to scripts as we are always importing freshly everytime so its easier for testing. so they can use this for any long term usages.
@@ -37,7 +37,7 @@ export function activate(context) {
                     // import fresh so that its easier to test the changes without restarting
                     // for now scripts can maybe use the store object supplied for any long term usage or file system maybe
                     const userScript = importFresh(programmaticTemplatePath);
-                    const toStr = (arg: any) => {
+                    const toStr = (arg) => {
                         try {
                             return JSON.stringify(arg);
                         } catch (err) {
@@ -48,7 +48,7 @@ export function activate(context) {
                     const logFn = (...args) => vscode.window.showInformationMessage((appendSrc ? "msg from your script: " : "") + args.map(toStr).join(" , "));
                     const errorFn = (...args) => vscode.window.showErrorMessage((appendSrc ? "msg from your script: " : "") + args.map(toStr).join(" , "));
                     const options = {
-                        absolutePath: vscode.window.activeTextEditor?.document.fileName,
+                        absolutePath: vscode.window.activeTextEditor.document.fileName,
                         log: logFn,
                         showError: errorFn,
                         showInputBox: (...args) => vscode.window.showInputBox(...args),
@@ -85,7 +85,11 @@ export function activate(context) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {
+function deactivate() {
     vscode.window.showInformationMessage("Sorry to see you go!. Please mail me sktguha2@gmail.com or create new issue at https://github.com/sktguha/programmaticTemplates/issues/new");
 }
 
+module.exports = {
+    activate,
+    deactivate
+}
