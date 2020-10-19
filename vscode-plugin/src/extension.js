@@ -10,77 +10,92 @@ function activate(context) {
     // supply this to scripts as we are always importing freshly everytime so its easier for testing. so they can use this for any long term usages.
     // although most scripts shouldn't need it
     const store = {};
-    context.subscriptions.push(
-        vscode.commands.registerCommand('progTemplates.execAndReplaceSelection', async () => {
-            try {
-                console.log('command invoked progTemplates.execAndReplaceSelection');
-                const editor = vscode.window.activeTextEditor;
-                if (editor) {
-                    const document = editor.document;
-                    const selection = editor.selection;
+    const main = async (commandNo) => {
+        try {
+            console.log('command invoked progTemplates.execAndReplaceSelection');
+            const editor = vscode.window.activeTextEditor;
+            if (editor) {
+                const document = editor.document;
+                const selection = editor.selection;
 
-                    // Get the word within the selection
-                    const word = document.getText(selection);
-                    const configuration = vscode.workspace.getConfiguration('progTemplates');
-                    const programmaticTemplatePath = configuration['ProgrammaticTemplatePath'];
-                    // TODO: run basicAsyncExample.js maybe if this argument is not supplied
-                    if (!programmaticTemplatePath) {
-                        // vscode.window.showErrorMessage("Error: please set 'progTemplates.ProgrammaticTemplatePath' in your settings.json to absolute path of the script you want to invoke. see https://github.com/sktguha/programmaticTemplates#running-custom-scripts for more information");
-                        const exampleReplaced = `replaced selected text : '${word}' with custom value. To run your own custom replacer function instead(in node.js itself, NO custom language required), follow the steps here : https://github.com/sktguha/programmaticTemplates#running-custom-scripts`;
-                        editor.edit(editBuilder => {
-                            editBuilder.replace(selection, exampleReplaced);
-                        });
-                        return;
-                    }
-                    const importFresh = require('import-fresh');
-                    // import fresh so that its easier to test the changes without restarting
-                    // for now scripts can maybe use the store object supplied for any long term usage or file system maybe
-                    const userScript = importFresh(programmaticTemplatePath);
-                    const toStr = (arg) => {
-                        try {
-                            return JSON.stringify(arg);
-                        } catch (err) {
-                            return arg.toString();
-                        }
-                    }
-                    let appendSrc = true;
-                    const logFn = (...args) => vscode.window.showInformationMessage((appendSrc ? "msg from your script: " : "") + args.map(toStr).join(" , "));
-                    const errorFn = (...args) => vscode.window.showErrorMessage((appendSrc ? "msg from your script: " : "") + args.map(toStr).join(" , "));
-                    global.alert = logFn;
-                    const options = {
-                        absolutePath: vscode.window.activeTextEditor.document.fileName,
-                        log: logFn,
-                        showError: errorFn,
-                        showInputBox: (...args) => vscode.window.showInputBox(...args),
-                        store,
-                        selections: editor.selections,
-                        setAppendSrcFlagValue: (val) => { appendSrc = val }
-                    };
-                    const oldLog = console.log;
-                    console.log = logFn;
-                    const oldError = console.error;
-                    console.error = errorFn;
-                    const promise = userScript(word, options);
-                    console.log = oldLog;
-                    console.error = oldError;
-                    console.log("all good");
-                    console.error("all good");
-                    // handle in case string is returned and not promise
-                    const result = await promise;
-                    if (!result) {
-                        vscode.window.showErrorMessage("your script didn't return any value. To debug, use console.log or console.error like you normally do, in your script (console.log and console.error are overwritten, so that calls to them in your script will show up in a dialog like this. NOTE: info and warn NOT supported yet). see a simple 4 line example here: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js");
-                        return;
-                    }
+                // Get the word within the selection
+                const word = document.getText(selection);
+                const configuration = vscode.workspace.getConfiguration('progTemplates');
+                const programmaticTemplatePath = configuration['ProgrammaticTemplatePath'];
+                // TODO: run basicAsyncExample.js maybe if this argument is not supplied
+                if (!programmaticTemplatePath) {
+                    // vscode.window.showErrorMessage("Error: please set 'progTemplates.ProgrammaticTemplatePath' in your settings.json to absolute path of the script you want to invoke. see https://github.com/sktguha/programmaticTemplates#running-custom-scripts for more information");
+                    const exampleReplaced = `replaced selected text : '${word}' with custom value. To run your own custom replacer function instead(in node.js itself, NO custom language required), follow the steps here : https://github.com/sktguha/programmaticTemplates#running-custom-scripts`;
                     editor.edit(editBuilder => {
-                        editBuilder.replace(selection, result);
+                        editBuilder.replace(selection, exampleReplaced);
                     });
+                    return;
                 }
-            } catch (err) {
-                console.error = console.log = console.info
-                console.log("error occurred", err);
-                vscode.window.showErrorMessage("error occurred while running your script:" + err.toString() + " \nerror stack: " + err.stack + " : \nJSON stringified error: " + JSON.stringify(err));
+                const importFresh = require('import-fresh');
+                // import fresh so that its easier to test the changes without restarting
+                // for now scripts can maybe use the store object supplied for any long term usage or file system maybe
+                // TODO: reload only on change ? and show warning that script reloaded so all script state is lost. may use store object instead passed in options object for such cases??
+                const userScript = importFresh(programmaticTemplatePath);
+                const toStr = (arg) => {
+                    try {
+                        return JSON.stringify(arg);
+                    } catch (err) {
+                        return arg.toString();
+                    }
+                }
+                let appendSrcFlag = true;
+                const logFn = (...args) => vscode.window.showInformationMessage((appendSrcFlag ? "msg from your script: " : "") + args.map(toStr).join(" , "));
+                const errorFn = (...args) => vscode.window.showErrorMessage((appendSrcFlag ? "msg from your script: " : "") + args.map(toStr).join(" , "));
+                global.alert = logFn;
+                const options = {
+                    absolutePath: vscode.window.activeTextEditor.document.fileName,
+                    log: logFn,
+                    showError: errorFn,
+                    showInputBox: (...args) => vscode.window.showInputBox(...args),
+                    store,
+                    selections: editor.selections,
+                    setAppendSrcFlagValue: (val) => { appendSrcFlag = val },
+                    commandNo
+                };
+                const oldLog = console.log;
+                console.log = logFn;
+                const oldError = console.error;
+                console.error = errorFn;
+                const promise = userScript(word, options);
+                console.log = oldLog;
+                console.error = oldError;
+                console.log("all good");
+                console.error("all good");
+                // handle in case string is returned and not promise
+                const result = await promise;
+                if (!result) {
+                    vscode.window.showErrorMessage("your script didn't return any value. To debug, use console.log or console.error like you normally do, in your script (console.log and console.error are overwritten, so that calls to them in your script will show up in a dialog like this. NOTE: info and warn NOT supported yet). see a simple 4 line example here: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js");
+                    return;
+                }
+                editor.edit(editBuilder => {
+                    editBuilder.replace(selection, result);
+                });
             }
-        })
+        } catch (err) {
+            console.error = console.log = console.info
+            console.log("error occurred", err);
+            vscode.window.showErrorMessage("error occurred while running your script:" + err.toString() + " \nerror stack: " + err.stack + " : \nJSON stringified error: " + JSON.stringify(err));
+        }
+    };
+    context.subscriptions.push(
+        vscode.commands.registerCommand('progTemplates.execAndReplaceSelection', () => main(1))
+    );
+    context.subscriptions.push(
+        vscode.commands.registerCommand('progTemplates.execAndReplaceSelection2', () => main(2))
+    );
+    context.subscriptions.push(
+        vscode.commands.registerCommand('progTemplates.execAndReplaceSelection3', () => main(3))
+    );
+    context.subscriptions.push(
+        vscode.commands.registerCommand('progTemplates.execAndReplaceSelection4', () => main(4))
+    );
+    context.subscriptions.push(
+        vscode.commands.registerCommand('progTemplates.execAndReplaceSelection5', () => main(5))
     );
 }
 
