@@ -4,6 +4,7 @@ const vscode = require('vscode');
 console.log('came here');
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
+const SPECIAL_SUPPRESS_OUTPUT_STRING = 'progTemplatesSpecialSupressOutputString';
 function activate(context) {
     console.log(process.version);
     console.log('Congratulations, your extension "programmaticTemplates" is now active!');
@@ -72,9 +73,11 @@ function activate(context) {
                     vscode.window.showErrorMessage("your script didn't return any value. To debug, use console.log or console.error like you normally do, in your script (console.log and console.error are overwritten, so that calls to them in your script will show up in a dialog like this. NOTE: info and warn NOT supported yet). see a simple 4 line example here: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js");
                     return;
                 }
-                editor.edit(editBuilder => {
-                    editBuilder.replace(selection, result);
-                });
+                if (result !== SPECIAL_SUPPRESS_OUTPUT_STRING) {
+                    editor.edit(editBuilder => {
+                        editBuilder.replace(selection, result);
+                    });
+                }
             }
         } catch (err) {
             console.error = console.log = console.info
