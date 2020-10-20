@@ -56,7 +56,9 @@ function activate(context) {
                     store,
                     selections: editor.selections,
                     setAppendSrcFlagValue: (val) => { appendSrcFlag = val },
-                    commandNo
+                    commandNo,
+                    // TODO: just passing for now for quick iteration. probably pass more granular functions and not entire thing ?
+                    vscode
                 };
                 const oldLog = console.log;
                 console.log = logFn;
