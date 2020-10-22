@@ -1,5 +1,5 @@
 # Programmatic Templates
-TODO: will add soon the powerful replacer script after removing company specific data, which using to create component, types,reducers ,actions,middleware and basic tests also, which was the main motivation behind this vscode extension.
+TODO: will add soon the powerful replacer script after removing company specific data, which I am using to create component, types,reducers ,actions,middleware and basic tests also, saving **100+ lines** of manual typing, which was the main motivation behind this vscode extension.
 <br/> Write code snippets in full blown javascript(node.js) instead of simple static json, thus giving more power in the hands of the developer
 # WARNING 
 Only run scripts from sources/people you trust. As there is **NO SANDBOXING** mechanism whatsoever yet https://github.com/sktguha/programmaticTemplates/issues/1<br/>
