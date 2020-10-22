@@ -1,5 +1,9 @@
 # Programmatic Templates
-write code snippets in full blown javascript(node.js) instead of simple static json, thus giving more power in the hands of the developer
+TODO: will add soon the powerful replacer script after removing company specific data, which I am using to create component, types,reducers ,actions,middleware and basic tests also, saving **100+ lines** of manual typing, which was the main motivation behind this vscode extension.
+<br/><br/> Write code snippets in full blown javascript(node.js) instead of simple static json, thus giving more power in the hands of the developer.The idea is similar to code snippets in vscode, but here the difference is you can specify any arbitrary node.js script to run.
+
+So if you select some text in vscode and press a shortcut key , your script is given the selected text as first argument(second argument has various details like absolutePath etc) and whatever is returned from your script , the selected text will be changed to that value
+
 # WARNING 
 Only run scripts from sources/people you trust. As there is **NO SANDBOXING** mechanism whatsoever yet https://github.com/sktguha/programmaticTemplates/issues/1<br/>
 # How to use
@@ -11,6 +15,6 @@ Please also see steps 2 and 3 below </br><br/>
 2. specify absolute path to the replacer script in extension options ( basically in settings.json add new option, `"progTemplates.ProgrammaticTemplatePath": "/absolute/path/to/your/replacerScript.js"` , for a simple 4 line example download this script: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js?raw=true and set the option "progTemplates.ProgrammaticTemplatePath" described above to the absolute path, for example in mac it probably would be <br/>
 `"progTemplates.ProgrammaticTemplatePath": "/Users/<your_user_name>/Downloads/basicAsyncExample.js"`
 <br/>)<br/><br/>
-3. You are all set! select any text in your code and press the keyboard shortcut(ctrl+z by default, TODO: change it in windows or you can reassign it from settings) or open command palette(command+shift+p in mac) and type (without quotes) '>Execute the script and replace selected text' and select the command from the dropdown and selected text will be replaced by the output from your script (your script gets various options in the first argument) 
+3. You are all set! select any text in your code and press the keyboard shortcut(ctrl+z by default, TODO: change it in windows or you can reassign it from settings) or open command palette(command+shift+p in mac) and type (without quotes) '>Execute the script and replace selected text' and select the command from the dropdown and selected text will be replaced by the output from your script (your script gets selectedText, a string as the first argument and various things as an options object in the second argument TODO: document these options) 
 <br/> See examples of replacer scripts here: https://github.com/sktguha/programmaticTemplatesExamples
 
