@@ -71,7 +71,7 @@ function activate(context) {
                 console.error("all good");
                 // handle in case string is returned and not promise
                 const result = await promise;
-                if (!result) {
+                if (result === undefined) {
                     vscode.window.showErrorMessage("your script didn't return any value. To debug, use console.log or console.error like you normally do, in your script (console.log and console.error are overwritten, so that calls to them in your script will show up in a dialog like this. NOTE: info and warn NOT supported yet). see a simple 4 line example here: https://github.com/sktguha/programmaticTemplatesExamples/blob/master/basicAsyncExample.js");
                     return;
                 }
