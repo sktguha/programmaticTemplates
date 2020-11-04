@@ -1,5 +1,5 @@
 # Programmatic Templates
-TODO: will add soon the powerful replacer script after removing company specific data, which I am using to create component, types,reducers ,actions,middleware and basic tests also, saving **200ines** of manual typing, which was the main motivation behind this vscode extension.
+TODO: will add soon the powerful replacer script after removing company specific data, which I am using to create component, types,reducers ,actions,middleware and basic tests also, saving **200+ lines** of manual typing, which was the main motivation behind this vscode extension.
 <br/><br/> Write code snippets in full blown javascript(node.js) instead of simple static json, thus giving more power in the hands of the developer.The idea is similar to code snippets in vscode, but here the difference is you can specify any arbitrary node.js script to run.
 
 So if you select some text in vscode and press a shortcut key , your script is given the selected text as first argument(second argument has various details like absolutePath etc) and whatever is returned from your script , the selected text will be changed to that value
