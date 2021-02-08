@@ -1,4 +1,6 @@
 # Programmatic Templates
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 TODO: will add soon the powerful replacer script after removing company specific data, which I am using to create component,types,reducers,actions,middleware and  tests also, saving **150+ lines** of manual typing, which was the main motivation behind this vscode extension.
 <br/><br/> Write code snippets in full blown javascript(node.js) instead of simple static json, thus giving more power in the hands of the developer.The idea is similar to code snippets in vscode, but here the difference is you can specify any arbitrary node.js script to run.
 
